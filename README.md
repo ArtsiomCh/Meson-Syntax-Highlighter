@@ -1,2 +1,3 @@
 # Meson-Syntax-Highlighter
-Meson Syntax Highlighter plugin for IntelliJ IDEA platform.
+Plugin for IntelliJ IDEA platform.
+This repositiry serves as bag tracker.
