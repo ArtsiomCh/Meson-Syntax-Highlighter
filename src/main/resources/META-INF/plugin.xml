@@ -1,0 +1,64 @@
+<idea-plugin>
+  <id>artsiomch.meson.syntax</id>
+  <name>Meson Syntax Highlighter</name>
+  <version>GRADLE.BUILD</version>
+  <vendor email="achapialiou@gmail.com" url="http://github.com/ArtsiomCh/CMake">Artsiom Chapialiou</vendor>
+
+  <product-descriptor code="PMESONSYNTAX" release-date="20191101" release-version="1931"/>
+
+  <description><![CDATA[
+     Plugin for Meson syntax highlight support.<br><br>
+
+     Plugin is <b>free</b> for community/free IDEs: IntelliJ IDEA Community, Android Studio, etc. <br>
+     Plugin is <b>paid</b> for commercial IDEs: IntelliJ IDEA Ultimate, CLion, etc. <br><br>
+
+     <li> Basic syntax highlight by https://mesonbuild.com/Syntax.html;
+     <li> Basic type checks for returning objects from methods by https://mesonbuild.com/Reference-manual.html;
+     <li> Highlighting styles are customisable at Settings -> Editor -> Color Scheme -> Meson. <br><br>
+
+     Known limitations aka Plans for future [no commitments ;)] :
+     <li> Parsing process is slow on relatively large (>1k lines) meson.build files (like systemd's <a href="https://github.com/systemd/systemd/blob/master/meson.build">meson.build</a>);
+     <li> No type checks for variables; Just some type checks for returning objects from methods. <br><br>
+
+    ]]>
+  </description>
+
+  <change-notes><![CDATA[
+    193.1.0 - Initial release: <br>
+     <li> Basic syntax highlight by https://mesonbuild.com/Syntax.html;
+     <li> Basic type checks for returning objects from methods by https://mesonbuild.com/Reference-manual.html;
+     <li> Highlighting styles are customisable at Settings -> Editor -> Color Scheme -> Meson. <br><br>
+    ]]>
+  </change-notes>
+
+  <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
+  <!--  <idea-version since-build="192.0" until-build="194.0"/>-->
+
+  <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
+       on how to target different products -->
+  <!-- uncomment to enable plugin in all products
+  -->
+  <depends>com.intellij.modules.lang</depends>
+
+  <extensions defaultExtensionNs="com.intellij">
+    <fileTypeFactory implementation="com.mesonplugin.MesonFileTypeFactory"/>
+    <lang.parserDefinition language="Meson" implementationClass="com.mesonplugin.MesonParserDefinition"/>
+    <lang.syntaxHighlighterFactory language="Meson" implementationClass="com.mesonplugin.MesonSyntaxHighlighterFactory" />
+    <colorSettingsPage implementation="com.mesonplugin.MesonColorSettingsPage" />
+
+    <annotator language="Meson" implementationClass="com.mesonplugin.MesonAnnotator" />
+
+    <additionalTextAttributes scheme="Darcula" file="colorSchemes/MesonLangDarcula.xml"/>
+    <additionalTextAttributes scheme="Default" file="colorSchemes/MesonLangDefault.xml"/>
+
+  </extensions>
+
+  <application-components>
+    <!-- Add your application components here -->
+  </application-components>
+
+  <actions>
+    <!-- Add your actions here -->
+  </actions>
+
+</idea-plugin>

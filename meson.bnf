@@ -1,0 +1,121 @@
+{
+  parserClass="com.mesonplugin.parsing.MesonParser"
+
+  extends="com.intellij.extapi.psi.ASTWrapperPsiElement"
+
+  psiClassPrefix="Meson"
+  psiImplClassSuffix="Impl"
+  psiPackage="com.mesonplugin.psi"
+  psiImplPackage="com.mesonplugin.psi.impl"
+//  psiImplUtilClass="com.mesonplugin.psi.impl.MesonPsiImplUtil"
+
+  elementTypeHolderClass="com.mesonplugin.psi.MesonTypes"
+  elementTypeClass="com.mesonplugin.psi.MesonElementType"
+  tokenTypeClass="com.mesonplugin.psi.MesonTokenType"
+
+//  implements("unquoted_argument_maybe_variable_container")="com.intellij.psi.PsiNameIdentifierOwner"
+//  methods(".*_container")=[getReferences]
+
+  tokens = [
+//    string_raw = "regexp:'''[^]*'''"
+//    space='regexp:\s+'
+//    string = "regexp:'([^']|\\')*'"
+//    comment = "regexp:#[^\r\n]*"
+//    number = "regexp:([0-9]+)|(0o[0-7]+)|(0b[0-1]+)|(0x[0-9A-F]+)"
+//    identifier = "regexp:[A-Za-z_][A-Za-z0-9_]*"
+
+    lpar ='('
+    rpar =')'
+    dot = '.'
+    colon = ':'
+    comma = ','
+    qmark = '?'
+    lsquarebracket = '['
+    rsquarebracket = ']'
+    lcurl = '{'
+    rcurl = '}'
+   ]
+
+ }
+
+ file ::= file_element* <<eof>> { pin=1 }
+ private file_element ::= command
+   { recoverWhile=file_element_recover } private file_element_recover::=!(identifier | if | foreach | comment)
+
+ private command ::= ( if_command | foreach_command | function_call | methods_chain | var_def_exp | comment | unrecognized)
+ unrecognized ::= identifier
+
+ if_command ::= if if_body endif { pin=1 }
+ private if_body ::=
+      if_check if_command_block
+      (elif if_check if_command_block)*
+      (else if_command_block)?
+   { recoverWhile=if_body_recover } private if_body_recover::=!(endif | identifier)
+ if_check ::= bool_cond_check | equality_check | negation? operand
+ if_command_block ::= command*
+
+ foreach_command ::= foreach foreach_body endforeach { pin=1 }
+ private foreach_body ::= iterator_def foreach_command_block
+   { recoverWhile=foreach_body_recover } private foreach_body_recover::=!(endforeach | identifier)
+ iterator_def ::= var_def [',' var_def] ':' (function_call | var_ref | array_def)
+ foreach_command_block ::= (command | break | continue)*
+
+// Single command invocation
+ function_call  ::=  <<command_expr function_name>>
+ function_name ::= identifier
+
+ methods_chain ::= method_object method_call+
+ method_object ::= object
+ method_call  ::=  <<command_expr (dot method_name)>> array_ref?
+ method_name ::= identifier
+
+ var_def_exp ::= var_def assign negation? param_expr {pin=2}
+ var_def ::= identifier
+
+ var_ref ::= identifier
+
+ private meta command_expr   ::= <<c>> arguments //{ pin=1 }
+ private meta comma_separated_list   ::= <<param>> (',' <<param>>)* ','?
+
+ // Arguments
+ arguments::=  lpar arguments_inner rpar { pin=1 }
+ private arguments_inner::= <<comma_separated_list argument_inner>>?
+   { recoverWhile=arguments_recover } private arguments_recover::=!(rpar | identifier)
+
+ private argument_inner::= keyword_argument | param_expr
+//   { recoverWhile=argument_recover } private argument_recover::=!(comma)
+
+ keyword_argument ::=  keyword_id comment* ':' param_expr  { pin=3 }
+ keyword_id ::= identifier
+
+ private param_expr ::= arithmetic_exp | ternary_op | bool_cond_check | equality_check | operand
+
+ arithmetic_exp ::= operand (arop operand)+
+
+ ternary_op ::= (bool_cond_check | equality_check | operand) '?' operand ':' operand {pin=2}
+
+ bool_cond_check ::= bool_argument (boolop negation? (bool_argument | bool_cond_check) )+
+ private bool_argument ::= equality_check | negation? operand
+
+ equality_check ::= operand_calculated (eq | (negation? in)) operand {pin=2}
+
+ private operand_calculated ::= arithmetic_exp | operand
+
+ private operand ::= operand_inner | '(' param_expr ')'
+ private operand_inner ::= comment* ( methods_chain | object | true | false ) comment*
+
+ private object ::= string_container | array_def | dict_def | function_call | (var_ref array_ref?) | number
+
+ string_container ::= string | stringraw
+
+ array_def ::= '[' arr_elements ']' { pin=1 }
+ private arr_elements::= <<comma_separated_list argument_inner>>?
+   { recoverWhile=array_recover } private array_recover::=!(']' | identifier)
+
+ array_ref ::= '[' number ']'
+
+ dict_def ::= '{' dict_elements '}' { pin=1 }
+ private dict_elements::= <<comma_separated_list dict_pair>>?
+   { recoverWhile=dict_recover } private dict_recover::=!('}' | identifier)
+ dict_pair ::=  string comment* ':' param_expr  { pin=3 }
+
