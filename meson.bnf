@@ -36,13 +36,15 @@
     rcurl = '}'
    ]
 
+//  consumeTokenMethod('.*_expr') = 'consumeTokenFast'
+
  }
 
  file ::= file_element* <<eof>> { pin=1 }
  private file_element ::= command
    { recoverWhile=file_element_recover } private file_element_recover::=!(identifier | if | foreach | comment)
 
- private command ::= ( if_command | foreach_command | function_call | methods_chain | var_def_exp | comment | unrecognized)
+ private command ::= ( if_command | foreach_command | function_call | methods_chain | var_def_expr | comment | unrecognized)
  unrecognized ::= identifier
 
  if_command ::= if if_body endif { pin=1 }
@@ -69,7 +71,7 @@
  method_call  ::=  <<command_expr (dot method_name)>> array_ref?
  method_name ::= identifier
 
- var_def_exp ::= var_def assign negation? param_expr {pin=2}
+ var_def_expr ::= var_def assign negation? param_expr {pin=2}
  var_def ::= identifier
 
  var_ref ::= identifier
@@ -88,9 +90,9 @@
  keyword_argument ::=  keyword_id comment* ':' param_expr  { pin=3 }
  keyword_id ::= identifier
 
- private param_expr ::= arithmetic_exp | ternary_op | bool_cond_check | equality_check | operand
+ private param_expr ::= arithmetic_expr | ternary_op | bool_cond_check | equality_check | operand
 
- arithmetic_exp ::= operand (arop operand)+
+ arithmetic_expr ::= operand (arop operand)+
 
  ternary_op ::= (bool_cond_check | equality_check | operand) '?' operand ':' operand {pin=2}
 
@@ -99,7 +101,7 @@
 
  equality_check ::= operand_calculated (eq | (negation? in)) operand {pin=2}
 
- private operand_calculated ::= arithmetic_exp | operand
+ private operand_calculated ::= arithmetic_expr | operand
 
  private operand ::= operand_inner | '(' param_expr ')'
  private operand_inner ::= comment* ( methods_chain | object | true | false ) comment*

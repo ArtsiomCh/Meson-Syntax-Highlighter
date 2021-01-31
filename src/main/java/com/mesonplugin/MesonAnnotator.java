@@ -23,7 +23,6 @@ public class MesonAnnotator implements Annotator {
 
   @Override
   public void annotate(@NotNull PsiElement element, @NotNull AnnotationHolder holder) {
-    if (!CheckLicense.enabled) return;
     if (element instanceof MesonStringContainer) {
       int elementStartInFile = element.getTextRange().getStartOffset();
       for (TextRange rangeInsideElementText : getFormattingPlaceholders(element.getText())) {

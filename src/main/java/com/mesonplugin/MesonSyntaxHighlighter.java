@@ -104,7 +104,7 @@ public class MesonSyntaxHighlighter implements SyntaxHighlighter {
   @Override
   public TextAttributesKey[] getTokenHighlights(IElementType iElementType) {
     final TextAttributesKey textAttrKey = mapMesonTypeToTextAttr.get(iElementType);
-    return (textAttrKey != null && CheckLicense.enabled)
+    return (textAttrKey != null)
         ? new TextAttributesKey[] {textAttrKey}
         : TextAttributesKey.EMPTY_ARRAY;
   }

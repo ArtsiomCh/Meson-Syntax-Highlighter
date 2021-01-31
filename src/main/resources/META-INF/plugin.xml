@@ -2,18 +2,19 @@
   <id>artsiomch.meson.syntax</id>
   <name>Meson Syntax Highlighter</name>
   <version>GRADLE.BUILD</version>
-  <vendor email="achapialiou@gmail.com" url="http://github.com/ArtsiomCh/CMake">Artsiom Chapialiou</vendor>
+  <vendor email="achapialiou@gmail.com" url="http://github.com/ArtsiomCh/Meson-Syntax-Highlighter">Artsiom Chapialiou</vendor>
 
+<!--
   <product-descriptor code="PMESONSYNTAX" release-date="20191101" release-version="1931"/>
+-->
 
   <description><![CDATA[
      Plugin for Meson syntax highlight support.<br><br>
 
-     Plugin is <b>free</b> for community/free IDEs: IntelliJ IDEA Community, Android Studio, etc. <br>
-     Plugin is <b>paid</b> for commercial IDEs: IntelliJ IDEA Ultimate, CLion, etc. <br><br>
+     Due to the luck of interest from community Plugin become <b>free</b> for all JetBrains IDEs. Thus no commitments for support, improvements and/or bugfixes. <br><br>
 
      <li> Basic syntax highlight by https://mesonbuild.com/Syntax.html;
-     <li> Basic type checks for returning objects from methods by https://mesonbuild.com/Reference-manual.html;
+     <li> Basic type checks for returning objects from functions and methods by https://mesonbuild.com/Reference-manual.html;
      <li> Highlighting styles are customisable at Settings -> Editor -> Color Scheme -> Meson. <br><br>
 
      Known limitations aka Plans for future [no commitments ;)] :
@@ -24,9 +25,11 @@
   </description>
 
   <change-notes><![CDATA[
-    193.1.0 - Initial release: <br>
+    203.1.0 - 2020.3 and above compatibility. <br>
+    202.0.1 - 2020.2 and below compatibility. <br>
+    193.1.1 - Initial release: <br>
      <li> Basic syntax highlight by https://mesonbuild.com/Syntax.html;
-     <li> Basic type checks for returning objects from methods by https://mesonbuild.com/Reference-manual.html;
+     <li> Basic type checks for returning objects from functions and methods by https://mesonbuild.com/Reference-manual.html;
      <li> Highlighting styles are customisable at Settings -> Editor -> Color Scheme -> Meson. <br><br>
     ]]>
   </change-notes>

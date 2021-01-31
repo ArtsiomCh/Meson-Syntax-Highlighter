@@ -6,7 +6,7 @@ plugins {
     id 'org.jetbrains.intellij' version '0.4.10'
 }
 
-version '193.1.0.dev1'
+version '203.1.0'
 
 sourceCompatibility = 1.8
 
@@ -19,16 +19,15 @@ dependencies {
 }
 
 intellij {
-    localPath '/home/artem/.local/share/JetBrains/Toolbox/apps/IDEA-C/ch-3/193.3519.25'
-    downloadSources false
-    plugins += 'PsiViewer:193-SNAPSHOT'
+    version '203-EAP-SNAPSHOT'
+    plugins += 'PsiViewer:203-SNAPSHOT'
     plugins += 'java'
-    sameSinceUntilBuild true
+//    sameSinceUntilBuild true
 }
 
 patchPluginXml {
-    sinceBuild 191
-    untilBuild 194
+    sinceBuild 194
+    untilBuild 999
 }
 
 sourceSets.main.java.srcDirs += 'gen'
